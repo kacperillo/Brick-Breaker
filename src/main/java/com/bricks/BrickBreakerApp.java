@@ -11,10 +11,8 @@ public class BrickBreakerApp extends JFrame {
     public static final int WIDTH = 500;
     public static final int HEIGHT = 500;
 
-    private Graphics2D g;
     private JPanel startPanel, gamePanel;
     private JButton playButton, exitButton;
-    private JLabel welcomeLabel;
     private Game game;
     private Timer timer;
 
@@ -40,6 +38,12 @@ public class BrickBreakerApp extends JFrame {
             }
         };
 
+        JLabel welcomeLabel = new JLabel("Welcome in Brick Breaker Game!");
+        playButton = new JButton("Play Game");
+        exitButton = new JButton("Exit");
+        startPanel.add(welcomeLabel);
+        startPanel.add(playButton);
+        startPanel.add(exitButton);
 
         addListeners();
         setContentPane(startPanel);
