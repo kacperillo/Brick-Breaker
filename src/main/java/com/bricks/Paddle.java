@@ -4,19 +4,21 @@ import java.awt.*;
 
 public class Paddle extends Element {
 
-    public static final int WIDTH = 70;
-    public static final int HEIGHT = 10;
-    private final int dx = 4;
+    private final int width;
+    private final int height;
+    private final int dx = Config.PADDLE_SPEED;
 
     public Paddle(int x) {
         this.x = x;
         y = 420;
-        color = Color.RED;
+        color = Config.PADDLE_COLOR;
+        width = Config.PADDLE_WIDTH;
+        height = Config.PADDLE_HEIGHT;
     }
 
     public void moveRight() {
         x += dx;
-        if(x > 500 - WIDTH) x = 500 - WIDTH;
+        if(x > 500 - width) x = 500 - width;
     }
 
     public void moveLeft() {
@@ -26,6 +28,6 @@ public class Paddle extends Element {
 
     @Override
     protected Shape getShape() {
-        return new Rectangle(x, y, WIDTH, HEIGHT);
+        return new Rectangle(x, y, width, height);
     }
 }

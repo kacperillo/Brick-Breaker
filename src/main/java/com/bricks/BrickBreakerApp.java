@@ -5,14 +5,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class BrickBreakerApp extends JFrame {
 
-    public static final int WIDTH = 500;
-    public static final int HEIGHT = 500;
 
-    private JPanel startPanel, gamePanel;
-    private JButton playButton, exitButton;
+    private StartPanel startPanel;
+    private JPanel gamePanel;
     private Game game;
     private Timer timer;
 
@@ -27,45 +26,37 @@ public class BrickBreakerApp extends JFrame {
     private void initComponents() {
 
         setTitle("Break Breaker");
-        setSize(WIDTH, HEIGHT);
+        setSize(Config.FRAME_WIDTH, Config.FRAME_HEIGHT);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        startPanel = new JPanel();
-        gamePanel = new JPanel() {
+        startPanel = new StartPanel();
+        gamePanel = new GamePanel() {
             @Override
             protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
                 game.paint((Graphics2D)g);
             }
         };
 
-        JLabel welcomeLabel = new JLabel("Welcome in Brick Breaker Game!");
-        playButton = new JButton("Play Game");
-        exitButton = new JButton("Exit");
-        startPanel.add(welcomeLabel);
-        startPanel.add(playButton);
-        startPanel.add(exitButton);
-
-        addListeners();
-        setContentPane(startPanel);
-        setVisible(true);
-    }
-
-    private void addListeners() {
-
-        playButton.addActionListener(event -> {
+        startPanel.getPlayButton().addActionListener(e -> {
             setContentPane(gamePanel);
+            gamePanel.requestFocus();
             startGame();
-//                revalidate();
         });
 
-        exitButton.addActionListener(event -> System.exit(0));
+        startPanel.getQuitButton().addActionListener(
+                e -> System.exit(0));
+
+        gamePanel.addKeyListener(new GameKeyAdapter());
+
+        setContentPane(startPanel);
+        setVisible(true);
     }
 
 
     private void startGame() {
         timer = new Timer();
         game = new Game();
-        addKeyListener();
 
         timer.schedule(new TimerTask() {
             @Override
@@ -76,27 +67,22 @@ public class BrickBreakerApp extends JFrame {
         }, 0, 16);
     }
 
-
-    private void addKeyListener() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    game.setPaddleLeftMoveFlag(true);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    game.setPaddleRightMoveFlag(true);
-                }
+    private class GameKeyAdapter extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+                game.setPaddleLeftMoveFlag(true);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                game.setPaddleRightMoveFlag(true);
             }
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    game.setPaddleLeftMoveFlag(false);
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    game.setPaddleRightMoveFlag(false);
-                }
+        }
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+                game.setPaddleLeftMoveFlag(false);
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                game.setPaddleRightMoveFlag(false);
             }
-        });
-        setFocusable(true);
-        requestFocus();
+        }
     }
 }
