@@ -1,4 +1,6 @@
-package com.bricks;
+package com.bricks.gui;
+
+import com.bricks.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,20 +18,19 @@ public class StartPanel extends javax.swing.JPanel {
 
     private void initComponents() {
 
-        setBackground(new Color(11, 3, 3));
-        setForeground(new Color(255, 255, 255));
-        setMaximumSize(new Dimension(500, 500));
-        setMinimumSize(new Dimension(500, 500));
+        setBackground(GuiConfig.BACKGROUND_COLOR);
+        setForeground(GuiConfig.FOREGROUND_COLOR);
+        setMaximumSize(GuiConfig.FRAME_DIMENSION);
+        setMinimumSize(GuiConfig.FRAME_DIMENSION);
 
-        playButton = new StartButton("PLAY");
-        quitButton = new StartButton("QUIT");
-
+        playButton = new GameButton("PLAY");
+        quitButton = new GameButton("QUIT");
         JLabel welcomeLabel = new JLabel();
-        welcomeLabel.setFont(new Font("Comic Sans MS", Font.BOLD, 36));
-        welcomeLabel.setForeground(new Color(255, 255, 255));
+
+        welcomeLabel.setFont(GuiConfig.BIG_FONT);
+        welcomeLabel.setForeground(GuiConfig.FOREGROUND_COLOR);
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         welcomeLabel.setText("Brick Breaker Game");
-
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -81,17 +82,5 @@ public class StartPanel extends javax.swing.JPanel {
         return quitButton;
     }
 
-    private static class StartButton extends JButton {
 
-        public StartButton(String text) {
-            super();
-            setBackground(new Color(0, 153, 153));
-            setFont(new Font("Comic Sans MS", Font.BOLD, 18));
-            setForeground(new Color(255, 255, 255));
-            setText(text);
-            setBorderPainted(false);
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
-            setFocusable(false);
-        }
-    }
 }

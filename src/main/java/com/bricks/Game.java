@@ -6,17 +6,17 @@ import java.util.List;
 
 public class Game {
 
+    private Controller controller;
     private List<Brick> bricks;
     private Ball ball;
     private Paddle paddle;
-    private boolean gameFlag = false;
     private boolean paddleLeftMoveFlag = false;
     private boolean paddleRightMoveFlag = false;
-    private Timer ballTimer, logicTimer;
+    private Timer timer;
 
-    public Game() {
+    public Game(Controller controller) {
+        this.controller = controller;
         initElements();
-        start();
     }
 
     public void paint(Graphics2D g) {
@@ -41,69 +41,82 @@ public class Game {
         for(int i = 0; i < Config.COLUMNS; i++) {
             for(int j = 0; j < Config.ROWS; j++) {
                 bricks.add(new Brick(
-                        10 + i * (Config.BRICK_WIDTH + Config.GAP),
-                        j * (Config.BRICK_HEIGHT + Config.GAP)));
+                        Config.GAP + i * (Config.BRICK_WIDTH + Config.GAP),
+                        Config.GAP + j * (Config.BRICK_HEIGHT + Config.GAP)));
             }
         }
         ball = new Ball(200,300);
         paddle = new Paddle(300);
-        logicTimer = new Timer();
-        ballTimer = new Timer();
+        timer = new Timer();
     }
 
     private void checkPaddleMove() {
-        if(paddleLeftMoveFlag) {
+        if (paddleLeftMoveFlag) {
             paddle.moveLeft();
-        } else if(paddleRightMoveFlag) {
+        } else if (paddleRightMoveFlag) {
             paddle.moveRight();
         }
     }
 
-    private synchronized void checkIntersects() {
-        if(bricks.removeIf(
-                element -> ball.checkIntersects(element)) || ball.checkIntersects(paddle)) {
+    private synchronized void checkIntersectsWithBricks() {
+        for (Brick brick : bricks) {
+            if (ball.checkHorizontalIntersects(brick)) {
+                ball.changeYDirection();
+                bricks.remove(brick);
+                break;
+            }
+            if (ball.checkVerticalIntersects(brick)) {
+                ball.changeXDirection();
+                if (!ball.isFalling())
+                    ball.changeYDirection();
+                bricks.remove(brick);
+                break;
+            }
+        }
+    }
+
+    private void checkIntersectsWithPaddle() {
+        if (ball.checkHorizontalIntersects(paddle)) {
             ball.changeYDirection();
+        } else if (ball.checkVerticalIntersects(paddle)) {
+            ball.changeXDirection();
         }
     }
 
     private void checkRebounds() {
-        if(ball.getX() <= 0 || ball.getX() >= (500 - 2 * Config.BALL_R)) {
+        if (ball.getX() <= 0 || ball.getX() >= (Config.FRAME_WIDTH - ball.getWidth())) {
             ball.changeXDirection();
         }
-        if(ball.getY() <= 0) {
+        if (ball.getY() <= 0) {
             ball.changeYDirection();
         }
     }
     private void checkGameOver() {
         if(ball.getY() > Config.FRAME_HEIGHT) {
-            logicTimer.cancel();
-            ballTimer.cancel();
-            gameFlag = false;
+            timer.cancel();
+            controller.stopGame();
         }
     }
 
     private void updateGame() {
         checkPaddleMove();
         checkRebounds();
-        checkIntersects();
+        if (ball.getY() < Config.FRAME_HEIGHT / 2) {
+            checkIntersectsWithBricks();
+        } else {
+            checkIntersectsWithPaddle();
+        }
         checkGameOver();
+        ball.move();
     }
 
-    private void start() {
-        gameFlag = true;
-
-        logicTimer.schedule(new TimerTask() {
+    public void start() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 updateGame();
             }
         }, 0, Config.PERIOD);
 
-        ballTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ball.move();
-            }
-        }, 0, 8);
     }
 }

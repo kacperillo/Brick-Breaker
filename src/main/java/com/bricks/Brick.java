@@ -14,4 +14,14 @@ public class Brick extends Element {
     protected Shape getShape() {
         return new Rectangle(x, y, Config.BRICK_WIDTH, Config.BRICK_HEIGHT);
     }
+
+    @Override
+    protected int getWidth() {
+        return Config.BRICK_WIDTH;
+    }
+
+    @Override
+    protected int getHeight() {
+        return Config.BRICK_HEIGHT;
+    }
 }

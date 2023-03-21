@@ -30,4 +30,14 @@ public class Paddle extends Element {
     protected Shape getShape() {
         return new Rectangle(x, y, width, height);
     }
+
+    @Override
+    protected int getWidth() {
+        return Config.PADDLE_WIDTH;
+    }
+
+    @Override
+    protected int getHeight() {
+        return Config.PADDLE_HEIGHT;
+    }
 }

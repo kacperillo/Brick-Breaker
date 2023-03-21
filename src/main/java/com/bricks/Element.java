@@ -15,6 +15,8 @@ public abstract class Element {
         return y;
     }
 
+
+
     public void paint(Graphics2D g)  {
         g.setColor(color);
         g.fill(getShape());
@@ -22,4 +24,7 @@ public abstract class Element {
 
     protected abstract Shape getShape();
 
+    protected abstract int getWidth();
+
+    protected abstract int getHeight();
 }
