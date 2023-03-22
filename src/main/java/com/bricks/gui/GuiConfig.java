@@ -6,7 +6,11 @@ import java.awt.*;
 
 public class GuiConfig {
 
+    public final static int SCREEN_WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    public final static int SCREEN_HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
     public final static Dimension FRAME_DIMENSION = new Dimension(Config.FRAME_WIDTH, Config.FRAME_HEIGHT);
+    public final static int DIALOG_WIDTH = 300;
+    public final static int DIALOG_HEIGHT = 140;
     public final static Color BACKGROUND_COLOR = new Color(11, 3, 3);
     public final static Color FOREGROUND_COLOR = new Color(255, 255, 255);
     public final static Color BUTTON_COLOR = new Color(0, 153, 153);

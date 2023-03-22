@@ -30,7 +30,7 @@ public class Gui extends JFrame {
         setTitle("Break Breaker");
         pack();
         setSize(Config.FRAME_WIDTH, Config.FRAME_HEIGHT);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -47,15 +47,17 @@ public class Gui extends JFrame {
             }
         };
 
-        startPanel.getPlayButton().addActionListener(e -> {
-            startGame();
-        });
+        startPanel.getPlayButton().addActionListener(
+                e -> startGame());
 
         startPanel.getQuitButton().addActionListener(
                 e -> closeApp());
 
         gamePanel.addKeyListener(new GameKeyAdapter());
 
+        setLocation(GuiConfig.SCREEN_WIDTH/2 - GuiConfig.FRAME_DIMENSION.width/2,
+                GuiConfig.SCREEN_HEIGHT/2 - GuiConfig.FRAME_DIMENSION.height/2);
+        setResizable(false);
         setContentPane(startPanel);
         setVisible(true);
     }
@@ -77,24 +79,10 @@ public class Gui extends JFrame {
 
     public void stopGame() {
 
-
     }
 
     private void closeApp() {
-        dialog = new JDialog(this);
-        ExitConfirmPane exitConfirmPane = new ExitConfirmPane();
-        dialog.setSize(300, 120);
-        dialog.setResizable(false);
-        dialog.setUndecorated(true);
-        dialog.setContentPane(exitConfirmPane);
-        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
-        exitConfirmPane.getYesButton().addActionListener(
-                e -> System.exit(0));
-
-        exitConfirmPane.getNoButton().addActionListener(
-                e -> dialog.dispose());
-        dialog.setVisible(true);
+        dialog = new GameDialog();
     }
 
 
