@@ -19,13 +19,14 @@ public class Game {
         initElements();
     }
 
-    public void paint(Graphics2D g) {
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
         synchronized (this) {
             for (Brick brick : bricks)
-                brick.paint(g);
+                brick.paint(g2d);
         }
-        ball.paint(g);
-        paddle.paint(g);
+        ball.paint(g2d);
+        paddle.paint(g2d);
     }
 
     public void setPaddleLeftMoveFlag(boolean b) {

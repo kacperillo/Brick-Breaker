@@ -17,7 +17,7 @@ public class Gui extends JFrame {
     private final Controller controller;
     private StartPanel startPanel;
     private JPanel gamePanel;
-    private JDialog dialog;
+    private EndGamePanel endGamePanel;
     private Timer timer;
 
     public Gui(Controller controller) {
@@ -34,26 +34,13 @@ public class Gui extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeApp();
+                new ExitConfirmationDialog();
             }
         });
 
-        startPanel = new StartPanel();
-        gamePanel = new GamePanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                controller.paintGame((Graphics2D)g);
-            }
-        };
-
-        startPanel.getPlayButton().addActionListener(
-                e -> startGame());
-
-        startPanel.getQuitButton().addActionListener(
-                e -> closeApp());
-
-        gamePanel.addKeyListener(new GameKeyAdapter());
+        startPanel = new StartPanel(controller);
+        gamePanel = new GamePanel(controller);
+        endGamePanel = new EndGamePanel(controller);
 
         setLocation(GuiConfig.SCREEN_WIDTH/2 - GuiConfig.FRAME_DIMENSION.width/2,
                 GuiConfig.SCREEN_HEIGHT/2 - GuiConfig.FRAME_DIMENSION.height/2);
@@ -62,11 +49,9 @@ public class Gui extends JFrame {
         setVisible(true);
     }
 
-
-    private void startGame() {
+    public void startDrawingGame() {
         setContentPane(gamePanel);
         gamePanel.requestFocus();
-        controller.startGame();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -78,31 +63,11 @@ public class Gui extends JFrame {
     }
 
     public void stopGame() {
-
+        timer.cancel();
+        getContentPane().add(endGamePanel);
     }
 
-    private void closeApp() {
-        dialog = new GameDialog();
-    }
+    private void backToMainMenu() {
 
-
-    private class GameKeyAdapter extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                controller.setPaddleLeftMoveFlag(true);
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                controller.setPaddleRightMoveFlag(true);
-            }
-        }
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                controller.setPaddleLeftMoveFlag(false);
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                controller.setPaddleRightMoveFlag(false);
-            }
-        }
     }
 }

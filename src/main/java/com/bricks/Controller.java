@@ -7,25 +7,23 @@ import java.awt.*;
 public class Controller {
 
     private Game game;
-    private Gui gui;
+    private final Gui gui;
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public void setGui(Gui gui) {
-        this.gui = gui;
+    public Controller() {
+        gui = new Gui(this);
     }
 
     public void startGame() {
+        game = new Game(this);
         game.start();
+        gui.startDrawingGame();
     }
 
     public void stopGame() {
         gui.stopGame();
     }
 
-    public void paintGame(Graphics2D g) {
+    public void paintGame(Graphics g) {
         game.paint(g);
     }
 
@@ -35,5 +33,8 @@ public class Controller {
 
     public void setPaddleRightMoveFlag(boolean b) {
         game.setPaddleRightMoveFlag(b);
+    }
+
+    public void backToStart() {
     }
 }

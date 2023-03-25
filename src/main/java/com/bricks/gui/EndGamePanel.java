@@ -3,61 +3,59 @@ package com.bricks.gui;
 import com.bricks.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class StartPanel extends JPanel {
+public class EndGamePanel extends JPanel {
 
     private final Controller controller;
-    private JButton playButton;
-    private JButton quitButton;
+    private JLabel message;
+    private JButton playAgainButton;
+    private JButton backButton;
 
-    public StartPanel(Controller controller) {
+    public EndGamePanel(Controller controller) {
         super();
         this.controller = controller;
-        initComponents();
-    }
+        message = new JLabel();
+        message.setFont(GuiConfig.DEFAULT_FONT);
+        message.setForeground(GuiConfig.FOREGROUND_COLOR);
+        message.setHorizontalAlignment(SwingConstants.CENTER);
+        message.setText("END");
 
-    private void initComponents() {
+        playAgainButton = new GameButton("PLAY AGAIN", GameButton.Size.DEFAULT);
+        backButton = new GameButton("BACK", GameButton.Size.DEFAULT);
+
+        playAgainButton.addActionListener(
+                e -> controller.startGame());
+
+        backButton.addActionListener(
+                e -> controller.backToStart());
 
         setBackground(GuiConfig.BACKGROUND_COLOR);
         setForeground(GuiConfig.FOREGROUND_COLOR);
-        setMaximumSize(GuiConfig.FRAME_DIMENSION);
-        setMinimumSize(GuiConfig.FRAME_DIMENSION);
-
-        playButton = new GameButton("PLAY", GameButton.Size.DEFAULT);
-        quitButton = new GameButton("QUIT", GameButton.Size.DEFAULT);
-        playButton.addActionListener(
-                e -> controller.startGame());
-
-        quitButton.addActionListener(
-                e -> new ExitConfirmationDialog());
-
-        JLabel welcomeLabel = new JLabel();
-
-        welcomeLabel.setFont(GuiConfig.BIG_FONT);
-        welcomeLabel.setForeground(GuiConfig.FOREGROUND_COLOR);
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        welcomeLabel.setText("Brick Breaker Game");
+        setMinimumSize(new Dimension(300, 170));
+        setMaximumSize(new Dimension(300, 170));
+        setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(
-                                welcomeLabel,
+                                message,
                                 GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.DEFAULT_SIZE,
                                 Short.MAX_VALUE)
                         .addGroup(
                                 layout.createSequentialGroup()
-                                        .addGap(150, 150, 150)
+                                        .addGap(20, 20, 20)
                                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                                 .addComponent(
-                                                        quitButton,
+                                                        playAgainButton,
                                                         GroupLayout.PREFERRED_SIZE,
                                                         180,
                                                         GroupLayout.PREFERRED_SIZE)
                                                 .addComponent(
-                                                        playButton,
+                                                        backButton,
                                                         GroupLayout.PREFERRED_SIZE,
                                                         180,
                                                         GroupLayout.PREFERRED_SIZE))
@@ -67,26 +65,17 @@ public class StartPanel extends JPanel {
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(50, 50, 50)
-                                .addComponent(welcomeLabel)
+                                .addComponent(message)
                                 .addGap(80, 80, 80)
-                                .addComponent(playButton)
+                                .addComponent(playAgainButton)
                                 .addGap(30, 30, 30)
                                 .addComponent(
-                                        quitButton,
+                                        backButton,
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(250, Short.MAX_VALUE))
         );
     }
-
-    public JButton getPlayButton() {
-        return playButton;
-    }
-
-    public JButton getQuitButton() {
-        return quitButton;
-    }
-
-
 }
+
