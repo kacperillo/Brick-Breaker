@@ -9,14 +9,4 @@ public class BrickBreakerApp {
     public static void main(String[] args) {
         EventQueue.invokeLater(Controller::new);
     }
-
-
-
-
-
-
-
-
-
-
 }

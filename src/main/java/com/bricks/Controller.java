@@ -36,5 +36,6 @@ public class Controller {
     }
 
     public void backToStart() {
+        gui.backToMainMenu();
     }
 }

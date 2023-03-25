@@ -15,9 +15,6 @@ import java.util.TimerTask;
 public class Gui extends JFrame {
 
     private final Controller controller;
-    private StartPanel startPanel;
-    private JPanel gamePanel;
-    private EndGamePanel endGamePanel;
     private Timer timer;
 
     public Gui(Controller controller) {
@@ -38,18 +35,16 @@ public class Gui extends JFrame {
             }
         });
 
-        startPanel = new StartPanel(controller);
-        gamePanel = new GamePanel(controller);
-        endGamePanel = new EndGamePanel(controller);
-
         setLocation(GuiConfig.SCREEN_WIDTH/2 - GuiConfig.FRAME_DIMENSION.width/2,
                 GuiConfig.SCREEN_HEIGHT/2 - GuiConfig.FRAME_DIMENSION.height/2);
+
         setResizable(false);
-        setContentPane(startPanel);
+        setContentPane(new StartPanel(controller));
         setVisible(true);
     }
 
     public void startDrawingGame() {
+        GamePanel gamePanel = new GamePanel(controller);
         setContentPane(gamePanel);
         gamePanel.requestFocus();
         timer = new Timer();
@@ -64,10 +59,15 @@ public class Gui extends JFrame {
 
     public void stopGame() {
         timer.cancel();
+        EndGamePanel endGamePanel = new EndGamePanel(controller);
         getContentPane().add(endGamePanel);
+        repaint();
+        revalidate();
     }
 
-    private void backToMainMenu() {
-
+    public void backToMainMenu() {
+        setContentPane(new StartPanel(controller));
+        repaint();
+        revalidate();
     }
 }
