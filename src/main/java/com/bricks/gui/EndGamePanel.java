@@ -5,12 +5,12 @@ import com.bricks.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-public class EndGamePanel extends JPanel {
+public abstract class EndGamePanel extends JPanel {
 
-    private final Controller controller;
-    private JLabel message;
-    private JButton playAgainButton;
-    private JButton backButton;
+    protected final Controller controller;
+    protected JLabel message;
+    protected JButton playAgainButton;
+    protected JButton backButton;
 
     public EndGamePanel(Controller controller) {
         super();
@@ -19,7 +19,6 @@ public class EndGamePanel extends JPanel {
         message.setFont(GuiConfig.DEFAULT_FONT);
         message.setForeground(GuiConfig.FOREGROUND_COLOR);
         message.setHorizontalAlignment(SwingConstants.CENTER);
-        message.setText("END");
 
         playAgainButton = new GameButton("PLAY AGAIN", GameButton.Size.DEFAULT);
         backButton = new GameButton("BACK", GameButton.Size.DEFAULT);

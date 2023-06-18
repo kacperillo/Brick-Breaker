@@ -19,10 +19,6 @@ public class Controller {
         gui.startDrawingGame();
     }
 
-    public void stopGame() {
-        gui.stopGame();
-    }
-
     public void paintGame(Graphics g) {
         game.paint(g);
     }
@@ -37,5 +33,13 @@ public class Controller {
 
     public void backToStart() {
         gui.backToMainMenu();
+    }
+
+    public void win() {
+        gui.stopGame(true);
+    }
+
+    public void loose() {
+        gui.stopGame(false);
     }
 }

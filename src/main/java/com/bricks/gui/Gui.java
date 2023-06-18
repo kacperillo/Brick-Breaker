@@ -4,9 +4,6 @@ import com.bricks.Config;
 import com.bricks.Controller;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Timer;
@@ -57,9 +54,14 @@ public class Gui extends JFrame {
         }, 0, Config.PERIOD);
     }
 
-    public void stopGame() {
+    public void stopGame(boolean isWin) {
         timer.cancel();
-        EndGamePanel endGamePanel = new EndGamePanel(controller);
+        EndGamePanel endGamePanel;
+        if(isWin) {
+            endGamePanel = new WinPanel(controller);
+        } else {
+            endGamePanel = new GameOverPanel(controller);
+        }
         getContentPane().add(endGamePanel);
         repaint();
         revalidate();

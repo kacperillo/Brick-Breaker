@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.function.Function;
 
 public class GamePanel extends JPanel {
 
@@ -20,6 +19,7 @@ public class GamePanel extends JPanel {
         setBackground(GuiConfig.BACKGROUND_COLOR);
         setForeground(GuiConfig.FOREGROUND_COLOR);
         addKeyListener(new GameKeyAdapter());
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0, 100));
     }
 
     @Override

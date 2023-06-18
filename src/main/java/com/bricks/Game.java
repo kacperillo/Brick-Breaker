@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Game {
 
-    private Controller controller;
+    private final Controller controller;
     private List<Brick> bricks;
     private Ball ball;
     private Paddle paddle;
@@ -92,10 +92,18 @@ public class Game {
             ball.changeYDirection();
         }
     }
+
+    private void checkWin() {
+        if(bricks.isEmpty()) {
+            timer.cancel();
+            controller.win();
+        }
+    }
+
     private void checkGameOver() {
         if(ball.getY() > Config.FRAME_HEIGHT) {
             timer.cancel();
-            controller.stopGame();
+            controller.loose();
         }
     }
 
@@ -107,6 +115,7 @@ public class Game {
         } else {
             checkIntersectsWithPaddle();
         }
+        checkWin();
         checkGameOver();
         ball.move();
     }
