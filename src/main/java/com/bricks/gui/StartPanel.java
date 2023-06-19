@@ -7,8 +7,6 @@ import javax.swing.*;
 public class StartPanel extends JPanel {
 
     private final Controller controller;
-    private JButton playButton;
-    private JButton quitButton;
 
     public StartPanel(Controller controller) {
         super();
@@ -23,13 +21,13 @@ public class StartPanel extends JPanel {
         setMaximumSize(GuiConfig.FRAME_DIMENSION);
         setMinimumSize(GuiConfig.FRAME_DIMENSION);
 
-        playButton = new GameButton("PLAY", GameButton.Size.DEFAULT);
-        quitButton = new GameButton("QUIT", GameButton.Size.DEFAULT);
+        JButton playButton = new GameButton("PLAY", GameButton.Size.DEFAULT);
+        JButton quitButton = new GameButton("QUIT", GameButton.Size.DEFAULT);
         playButton.addActionListener(
                 e -> controller.startGame());
 
         quitButton.addActionListener(
-                e -> new ExitConfirmationDialog());
+                e -> new ExitConfirmationDialog(controller));
 
         JLabel welcomeLabel = new JLabel();
 
@@ -79,14 +77,4 @@ public class StartPanel extends JPanel {
                                 .addContainerGap(250, Short.MAX_VALUE))
         );
     }
-
-    public JButton getPlayButton() {
-        return playButton;
-    }
-
-    public JButton getQuitButton() {
-        return quitButton;
-    }
-
-
 }

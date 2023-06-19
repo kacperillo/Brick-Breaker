@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 public class GamePanel extends JPanel {
 
     private final Controller controller;
+    private boolean isPausePressed = false;
 
     public GamePanel(Controller controller) {
         super();
@@ -37,6 +38,14 @@ public class GamePanel extends JPanel {
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 controller.setPaddleRightMoveFlag(true);
             }
+            if(e.getKeyCode() == KeyEvent.VK_P && !isPausePressed) {
+                if(!controller.isPaused()) {
+                    controller.pause(true);
+                } else {
+                    controller.resume();
+                }
+                isPausePressed = true;
+            }
         }
         @Override
         public void keyReleased(KeyEvent e) {
@@ -44,6 +53,10 @@ public class GamePanel extends JPanel {
                 controller.setPaddleLeftMoveFlag(false);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                 controller.setPaddleRightMoveFlag(false);
+            }
+
+            if(e.getKeyCode() == KeyEvent.VK_P) {
+                isPausePressed = false;
             }
         }
     }

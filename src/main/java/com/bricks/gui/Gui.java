@@ -12,10 +12,13 @@ import java.util.TimerTask;
 public class Gui extends JFrame {
 
     private final Controller controller;
+    private final PausePanel pausePanel;
     private Timer timer;
+
 
     public Gui(Controller controller) {
         this.controller = controller;
+        pausePanel = new PausePanel(controller);
         initComponents();
     }
 
@@ -28,7 +31,8 @@ public class Gui extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                new ExitConfirmationDialog();
+                new ExitConfirmationDialog(controller);
+                controller.pause(false);
             }
         });
 
@@ -54,7 +58,7 @@ public class Gui extends JFrame {
         }, 0, Config.PERIOD);
     }
 
-    public void stopGame(boolean isWin) {
+    public void endGame(boolean isWin) {
         timer.cancel();
         EndGamePanel endGamePanel;
         if(isWin) {
@@ -65,6 +69,16 @@ public class Gui extends JFrame {
         getContentPane().add(endGamePanel);
         repaint();
         revalidate();
+    }
+
+    public void pauseGame() {
+        getContentPane().add(pausePanel);
+        repaint();
+        revalidate();
+    }
+
+    public void resumeGame() {
+        getContentPane().remove(pausePanel);
     }
 
     public void backToMainMenu() {

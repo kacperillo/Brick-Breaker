@@ -1,5 +1,7 @@
 package com.bricks.gui;
 
+import com.bricks.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public class ExitConfirmationDialog extends JDialog {
     private final JButton yesButton;
     private final JButton noButton;
 
-    public ExitConfirmationDialog() {
+    public ExitConfirmationDialog(Controller controller) {
 
         super();
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -21,7 +23,10 @@ public class ExitConfirmationDialog extends JDialog {
                 e -> System.exit(0));
 
         noButton.addActionListener(
-                e -> dispose());
+                e -> {
+                    dispose();
+                    controller.resume();
+                });
 
         setContentPane(new ExitConfirmPane());
         setSize(GuiConfig.DIALOG_WIDTH, GuiConfig.DIALOG_HEIGHT);

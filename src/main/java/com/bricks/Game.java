@@ -108,6 +108,9 @@ public class Game {
     }
 
     private void updateGame() {
+        if(controller.isPaused()) {
+            return;
+        }
         checkPaddleMove();
         checkRebounds();
         if (ball.getY() < Config.FRAME_HEIGHT / 2) {

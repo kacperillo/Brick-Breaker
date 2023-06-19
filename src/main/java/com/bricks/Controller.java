@@ -8,6 +8,7 @@ public class Controller {
 
     private Game game;
     private final Gui gui;
+    private boolean isPaused = false;
 
     public Controller() {
         gui = new Gui(this);
@@ -36,10 +37,26 @@ public class Controller {
     }
 
     public void win() {
-        gui.stopGame(true);
+        gui.endGame(true);
     }
 
     public void loose() {
-        gui.stopGame(false);
+        gui.endGame(false);
+    }
+
+    public void pause(boolean showPausePanel) {
+        isPaused = true;
+        if (showPausePanel) {
+            gui.pauseGame();
+        }
+    }
+
+    public void resume() {
+        isPaused = false;
+        gui.resumeGame();
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 }
